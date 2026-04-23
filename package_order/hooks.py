@@ -5,6 +5,45 @@ app_description = "Integrating with the shiprocket"
 app_email = "nitish.m@quantumberg.com"
 app_license = "mit"
 
+doc_events = {
+    "Item": {
+        "on_update": "package_order.api.product.sync_item_to_shiprocket"
+    },
+    "Sales Order": {
+        "on_submit": "package_order.api.order.create_shiprocket_order"
+    }
+}
+
+scheduler_events = {
+    "hourly": [
+        "package_order.api.tracking.update_tracking_status"
+    ]
+}
+
+override_whitelisted_methods = {
+    "webhook.listener": "package_order.api.tracking.tracking_update"
+}
+
+
+before_uninstall = "package_order.utils.cleanup.remove_custom_fields"
+
+
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": [
+            ["name", "in", [
+                "Sales Order-custom_shiprocket_details",
+                "Sales Order-custom_shiprocket_shipment_id",
+                "Sales Order-custom_shiprocket_awb",
+                "Sales Order-custom_shipment_status",
+                "Sales Order-custom_courier_name",
+                "Sales Order-custom_tracking_url"
+            ]]
+        ]
+    }
+]
+
 # Apps
 # ------------------
 
