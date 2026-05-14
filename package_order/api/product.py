@@ -33,3 +33,17 @@ def get_shiprocket_token():
     settings.save(ignore_permissions=True)
 
     return settings.token
+
+
+# ADD THIS FUNCTION
+def sync_item_to_shiprocket(doc, method=None):
+    try:
+        frappe.logger().info(f"Item synced: {doc.name}")
+
+        # Future Shiprocket item sync logic here
+
+    except Exception:
+        frappe.log_error(
+            frappe.get_traceback(),
+            "Shiprocket Item Sync Error"
+        )
